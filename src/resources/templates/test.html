@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập & Đăng ký</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(120deg, #e0c3fc, #8ec5fc);
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .form-header {
+        background: linear-gradient(to right, #4776e6, #8e54e9);
+        padding: 30px 20px;
+        text-align: center;
+        color: white;
+        border-radius: 16px 16px 0 0;
+      }
+
+      .form-header h2 {
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .form-header p {
+        opacity: 0.8;
+        font-size: 14px;
+      }
+
+      .form-content {
+        padding: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
+
+      .form-group input:focus {
+        border-color: #8e54e9;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(142, 84, 233, 0.1);
+      }
+
+      .form-group i {
+        position: absolute;
+        right: 15px;
+        top: 37px;
+        color: #999;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(to right, #4776e6, #8e54e9);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-top: 10px;
+      }
+
+      .btn:hover {
+        background: linear-gradient(to right, #3a66d6, #7e44d9);
+        box-shadow: 0 5px 15px rgba(142, 84, 233, 0.3);
+      }
+
+      .social-login {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        gap: 15px;
+      }
+
+      .social-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .social-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .social-btn.facebook {
+        color: #3b5998;
+      }
+
+      .social-btn.google {
+        color: #db4437;
+      }
+
+      .social-btn.apple {
+        color: #000;
+      }
+
+      .form-divider {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .form-divider span {
+        flex: 1;
+        height: 1px;
+        background: #e0e0e0;
+      }
+
+      .form-divider p {
+        margin: 0 15px;
+        color: #777;
+        font-size: 14px;
+      }
+
+      .form-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .form-footer a {
+        color: #8e54e9;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .form-footer a:hover {
+        text-decoration: underline;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        position: relative;
+      }
+
+      .alert-success {
+        background-color: #4caf50;
+      }
+
+      .alert-danger {
+        background-color: #f44336;
+      }
+
+      .alert .close-btn {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        color: white;
+        opacity: 0.7;
+        cursor: pointer;
+      }
+
+      .alert .close-btn:hover {
+        opacity: 1;
+      }
+
+      .captcha-container {
+        margin-bottom: 20px;
+      }
+
+      .captcha-box {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .captcha-image {
+        background: #f9f9f9;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 5px;
+        color: #333;
+        user-select: none;
+        flex: 1;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .captcha-image::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(0, 0, 0, 0.05) 10px,
+          rgba(0, 0, 0, 0.05) 20px
+        );
+        z-index: 1;
+      }
+
+      .captcha-image span {
+        position: relative;
+        z-index: 2;
+      }
+
+      .refresh-captcha {
+        background: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 10px;
+        margin-left: 10px;
+        cursor: pointer;
+        color: #555;
+      }
+
+      .refresh-captcha:hover {
+        background: #e9e9e9;
+      }
+
+      .password-toggle {
+        cursor: pointer;
+      }
+
+      .forgot-password {
+        text-align: right;
+        margin-top: -15px;
+        margin-bottom: 15px;
+      }
+
+      .forgot-password a {
+        color: #8e54e9;
+        font-size: 13px;
+        text-decoration: none;
+      }
+
+      .forgot-password a:hover {
+        text-decoration: underline;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .remember-me input {
+        margin-right: 8px;
+      }
+
+      .remember-me label {
+        font-size: 14px;
+        color: #666;
+        cursor: pointer;
+      }
+
+      .forms-container {
+        position: relative;
+        transition: height 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .form-active {
+        animation: fadeIn 0.5s forwards;
+      }
+
+      .password-strength {
+        height: 5px;
+        margin-top: 8px;
+        border-radius: 3px;
+        background: #e0e0e0;
+        overflow: hidden;
+      }
+
+      .password-strength-meter {
+        height: 100%;
+        width: 0;
+        transition: width 0.3s, background 0.3s;
+      }
+
+      .password-strength-text {
+        font-size: 12px;
+        margin-top: 5px;
+        color: #777;
+      }
+
+      .weak {
+        background: #f44336;
+        width: 25%;
+      }
+      .medium {
+        background: #ffc107;
+        width: 50%;
+      }
+      .strong {
+        background: #4caf50;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container" id="formsContainer">
+        <!-- Login Form -->
+        <form id="loginForm" class="form-active">
+          <div class="form-header">
+            <h2>Chào mừng trở lại</h2>
+            <p>Đăng nhập để tiếp tục</p>
+          </div>
+          <div class="form-content">
+            <div id="loginAlert" class="alert hide"></div>
+
+            <div class="social-login">
+              <button type="button" class="social-btn facebook">
+                <i class="fab fa-facebook-f"></i>
+              </button>
+              <button type="button" class="social-btn google">
+                <i class="fab fa-google"></i>
+              </button>
+              <button type="button" class="social-btn apple">
+                <i class="fab fa-apple"></i>
+              </button>
+            </div>
+
+            <div class="form-divider">
+              <span></span>
+              <p>hoặc</p>
+              <span></span>
+            </div>
+
+            <div class="form-group">
+              <label>Số điện thoại hoặc email</label>
+              <input type="text" name="username" id="login-username" required />
+              <i class="fas fa-user"></i>
+            </div>
+
+            <div class="form-group">
+              <label>Mật khẩu</label>
+              <input type="password" name="password" id="login-password" required />
+              <i
+                class="fas fa-eye password-toggle"
+                onclick="togglePassword(this)"
+              ></i>
+            </div>
+
+            <div class="forgot-password">
+              <a href="#" onclick="showForgotPassword()">Quên mật khẩu?</a>
+            </div>
+
+            <div class="remember-me">
+              <input type="checkbox" id="rememberMe" />
+              <label for="rememberMe">Ghi nhớ đăng nhập</label>
+            </div>
+
+            <div class="captcha-container">
+              <label>Xác thực không phải người máy</label>
+              <div class="captcha-box">
+                <div class="captcha-image">
+                  <span id="captchaText"></span>
+                </div>
+                <button
+                  type="button"
+                  class="refresh-captcha"
+                  onclick="generateCaptcha()"
+                >
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+              </div>
+              <div class="form-group" style="margin-bottom: 0">
+                <input
+                  type="text"
+                  name="captcha"
+                  id="login-captcha"
+                  placeholder="Nhập mã xác thực"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn" id="login-btn">Đăng nhập</button>
+
+            <div class="form-footer">
+              <p>
+                Chưa có tài khoản?
+                <a href="#" onclick="toggleForms('register')">Đăng ký ngay</a>
+              </p>
+            </div>
+          </div>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="hide">
+          <div class="form-header">
+            <h2>Tạo tài khoản mới</h2>
+            <p>Đăng ký tài khoản để tiếp tục</p>
+          </div>
+          <div class="form-content">
+            <div id="registerAlert" class="alert hide"></div>
+
+            <div class="form-group">
+              <label>Họ và tên</label>
+              <input type="text" name="userName" id="register-name" required />
+              <i class="fas fa-user"></i>
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" id="register-email" required />
+              <i class="fas fa-envelope"></i>
+            </div>
+
+            <div class="form-group">
+              <label>Số điện thoại</label>
+              <input type="text" name="phoneNumber" id="register-phone" required />
+              <i class="fas fa-phone"></i>
+            </div>
+
+            <div class="form-group">
+              <label>Mật khẩu</label>
+              <input
+                type="password"
+                name="password"
+                id="registerPassword"
+                required
+                onkeyup="checkPasswordStrength()"
+              />
+              <i
+                class="fas fa-eye password-toggle"
+                onclick="togglePassword(this)"
+              ></i>
+              <div class="password-strength">
+                <div
+                  class="password-strength-meter"
+                  id="passwordStrengthMeter"
+                ></div>
+              </div>
+              <div
+                class="password-strength-text"
+                id="passwordStrengthText"
+              ></div>
+            </div>
+
+            <div class="form-group">
+              <label>Xác nhận mật khẩu</label>
+              <input type="password" name="confirmPassword" id="register-confirm-password" required />
+              <i
+                class="fas fa-eye password-toggle"
+                onclick="togglePassword(this)"
+              ></i>
+            </div>
+
+            <div class="captcha-container">
+              <label>Xác thực không phải người máy</label>
+              <div class="captcha-box">
+                <div class="captcha-image">
+                  <span id="registerCaptchaText"></span>
+                </div>
+                <button
+                  type="button"
+                  class="refresh-captcha"
+                  onclick="generateCaptcha('register')"
+                >
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+              </div>
+              <div class="form-group" style="margin-bottom: 0">
+                <input
+                  type="text"
+                  name="captcha"
+                  id="register-captcha"
+                  placeholder="Nhập mã xác thực"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn" id="register-btn">Đăng ký</button>
+
+            <div class="form-footer">
+              <p>
+                Đã có tài khoản?
+                <a href="#" onclick="toggleForms('login')">Đăng nhập</a>
+              </p>
+            </div>
+          </div>
+        </form>
+
+        <!-- Forgot Password Form -->
+        <form id="forgotPasswordForm" class="hide">
+          <div class="form-header">
+            <h2>Quên mật khẩu</h2>
+            <p>Nhập email hoặc số điện thoại để lấy lại mật khẩu</p>
+          </div>
+          <div class="form-content">
+            <div id="forgotPasswordAlert" class="alert hide"></div>
+
+            <div class="form-group">
+              <label>Email hoặc số điện thoại</label>
+              <input type="text" name="emailOrPhone" required />
+              <i class="fas fa-envelope"></i>
+            </div>
+
+            <div class="captcha-container">
+              <label>Xác thực không phải người máy</label>
+              <div class="captcha-box">
+                <div class="captcha-image">
+                  <span id="forgotPasswordCaptchaText"></span>
+                </div>
+                <button
+                  type="button"
+                  class="refresh-captcha"
+                  onclick="generateCaptcha('forgotPassword')"
+                >
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+              </div>
+              <div class="form-group" style="margin-bottom: 0">
+                <input
+                  type="text"
+                  name="captcha"
+                  placeholder="Nhập mã xác thực"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn">Gửi yêu cầu</button>
+
+            <div class="form-footer">
+              <p>
+                Quay lại
+                <a href="#" onclick="toggleForms('login')">Đăng nhập</a>
+              </p>
+            </div>
+          </div>
+        </form>
+
+        <!-- Reset Password Form (Hidden initially, shown after verification) -->
+        <form id="resetPasswordForm" class="hide">
+          <div class="form-header">
+            <h2>Đặt lại mật khẩu</h2>
+            <p>Nhập mật khẩu mới của bạn</p>
+          </div>
+          <div class="form-content">
+            <div id="resetPasswordAlert" class="alert hide"></div>
+
+            <div class="form-group">
+              <label>Mật khẩu mới</label>
+              <input
+                type="password"
+                name="newPassword"
+                id="newPassword"
+                required
+                onkeyup="checkNewPasswordStrength()"
+              />
+              <i
+                class="fas fa-eye password-toggle"
+                onclick="togglePassword(this)"
+              ></i>
+              <div class="password-strength">
+                <div
+                  class="password-strength-meter"
+                  id="newPasswordStrengthMeter"
+                ></div>
+              </div>
+              <div
+                class="password-strength-text"
+                id="newPasswordStrengthText"
+              ></div>
+            </div>
+
+            <div class="form-group">
+              <label>Xác nhận mật khẩu mới</label>
+              <input type="password" name="confirmNewPassword" required />
+              <i
+                class="fas fa-eye password-toggle"
+                onclick="togglePassword(this)"
+              ></i>
+            </div>
+
+            <button type="submit" class="btn">Cập nhật mật khẩu</button>
+
+            <div class="form-footer">
+              <p>
+                Quay lại
+                <a href="#" onclick="toggleForms('login')">Đăng nhập</a>
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Include the authentication script -->
+    <script src="auth.js"></script>
+    
+    <script>
+      // Helpers for showing alerts
+      function showAlert(formId, message, type) {
+        const alertEl = document.getElementById(formId + "Alert");
+        alertEl.innerHTML =
+          message +
+          '<span class="close-btn" onclick="closeAlert(\'' +
+          formId +
+          '\')"><i class="fas fa-times"></i></span>';
+        alertEl.className = "alert alert-" + type;
+      }
+
+      function closeAlert(formId) {
+        const alertEl = document.getElementById(formId + "Alert");
+        alertEl.className = "alert hide";
+      }
+
+      function hideAlert(formId) {
+        const alertEl = document.getElementById(formId + "Alert");
+        alertEl.className = "alert hide";
+      }
+
+      // Toggle password visibility
+      function togglePassword(icon) {
+        const passwordInput = icon.previousElementSibling;
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      }
+
+      // Generate CAPTCHA
+      function generateCaptcha(formPrefix = "") {
+        const chars =
+          "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let captcha = "";
+        for (let i = 0; i < 6; i++) {
+          captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        const captchaTextId = formPrefix
+          ? formPrefix + "CaptchaText"
+          : "captchaText";
+        document.getElementById(captchaTextId).textContent = captcha;
+        return captcha;
+      }
+
+      // Check password strength
+      function checkPasswordStrength() {
+        const password = document.getElementById("registerPassword").value;
+        const meter = document.getElementById("passwordStrengthMeter");
+        const text = document.getElementById("passwordStrengthText");
+
+        // Reset
+        meter.className = "";
+
+        // Check strength
+        if (password.length === 0) {
+          meter.style.width = "0";
+          text.textContent = "";
+          return;
+        }
+
+        let strength = 0;
+
+        // Length check
+        if (password.length >= 8) strength += 1;
+
+        // Character variety checks
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+        // Update UI based on strength
+        if (strength <= 2) {
+          meter.className = "weak";
+          text.textContent = "Yếu";
+          text.style.color = "#F44336";
+        } else if (strength === 3) {
+          meter.className = "medium";
+          text.textContent = "Trung bình";
+          text.style.color = "#FFC107";
+        } else {
+          meter.className = "strong";
+          text.textContent = "Mạnh";
+          text.style.color = "#4CAF50";
+        }
+      }
+
+      // Check new password strength (for reset password form)
+      function checkNewPasswordStrength() {
+        const password = document.getElementById("newPassword").value;
+        const meter = document.getElementById("newPasswordStrengthMeter");
+        const text = document.getElementById("newPasswordStrengthText");
+
+        // Reset
+        meter.className = "";
+
+        // Check strength
+        if (password.length === 0) {
+          meter.style.width = "0";
+          text.textContent = "";
+          return;
+        }
+
+        let strength = 0;
+
+        // Length check
+        if (password.length >= 8) strength += 1;
+
+        // Character variety checks
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+        // Update UI based on strength
+        if (strength <= 2) {
+          meter.className = "weak";
+          text.textContent = "Yếu";
+          text.style.color = "#F44336";
+        } else if (strength === 3) {
+          meter.className = "medium";
+          text.textContent = "Trung bình";
+          text.style.color = "#FFC107";
+        } else {
+          meter.className = "strong";
+          text.textContent = "Mạnh";
+          text.style.color = "#4CAF50";
+        }
+      }
+
+      // Toggle between forms
+      function toggleForms(formType) {
+        const loginForm = document.getElementById("loginForm");
+        const registerForm = document.getElementById("registerForm");
+        const forgotPasswordForm =
+          document.getElementById("forgotPasswordForm");
+        const resetPasswordForm = document.getElementById("resetPasswordForm");
+
+        // Hide all forms
+        loginForm.className = "hide";
+        registerForm.className = "hide";
+        forgotPasswordForm.className = "hide";
+        resetPasswordForm.className = "hide";
+
+        // Show selected form
+        if (formType === "register") {
+          registerForm.className = "form-active";
+          generateCaptcha("register");
+        } else if (formType === "forgotPassword") {
+          forgotPasswordForm.className = "form-active";
+          generateCaptcha("forgotPassword");
+        } else if (formType === "resetPassword") {
+          resetPasswordForm.className = "form-active";
+        } else {
+          loginForm.className = "form-active";
+          generateCaptcha();
+        }
+
+        // Clear alerts
+        hideAlert("login");
+        hideAlert("register");
+        hideAlert("forgotPassword");
+        hideAlert("resetPassword");
+      }
+
+      // Show forgot password form
+      function showForgotPassword() {
+        toggleForms("forgotPassword");
+      }
+
+      // Add event listeners when the document is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        // Generate CAPTCHA on page load
+        generateCaptcha();
+        generateCaptcha("register");
+        
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const username = document.getElementById('login-username').value;
+          const password = document.getElementById('login-password').value;
+          const rememberMe = document.getElementById('rememberMe').checked;
+          const captchaInput = document.getElementById('login-captcha').value;
+          const captchaText = document.getElementById('captchaText').textContent;
+          
+          // Validate form
+          if (!username || !password) {
+            showAlert('login', 'Vui lòng nhập đầy đủ thông tin', 'danger');
+            return;
+          }
+          
+          // Validate CAPTCHA
+          if (captchaInput !== captchaText) {
+            showAlert('login', 'Mã xác thực không đúng', 'danger');
+            generateCaptcha();
+            return;
+          }
+          
+          // Attempt login using the auth system
+          const success = window.authSystem.login(username, password, rememberMe);
+          
+          if (!success) {
+            showAlert('login', 'Tên đăng nhập hoặc mật khẩu không đúng', 'danger');
+            generateCaptcha();
+          }
+        });
+        
+        // Register form submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const name = document.getElementById('register-name').value;
+          const email = document.getElementById('register-email').value;
+          const phone = document.getElementById('register-phone').value;
+          const password = document.getElementById('registerPassword').value;
+          const confirmPassword = document.getElementById('register-confirm-password').value;
+          const captchaInput = document.getElementById('register-captcha').value;
+          const captchaText = document.getElementById('registerCaptchaText').textContent;
+          
+          // Validate form
+          if (!name || !email || !phone || !password || !confirmPassword) {
+            showAlert('register', 'Vui lòng nhập đầy đủ thông tin', 'danger');
+            return;
+          }
+          
+          // Validate email format
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            showAlert('register', 'Email không đúng định dạng', 'danger');
+            return;
+          }
+          
+          // Validate phone format
+          const phoneRegex = /^(0|84|\+84)(\d{9,10})$/;
+          if (!phoneRegex.test(phone)) {
+            showAlert('register', 'Số điện thoại không đúng định dạng', 'danger');
+            return;
+          }
+          
+          // Validate password
+          if (password.length < 8) {
+            showAlert('register', 'Mật khẩu phải có ít nhất 8 ký tự', 'danger');
+            return;
+          }
+          
+          // Validate password match
+          if (password !== confirmPassword) {
+            showAlert('register', 'Mật khẩu xác nhận không khớp', 'danger');
+            return;
+          }
+          
+          // Validate CAPTCHA
+          if (captchaInput !== captchaText) {
+            showAlert('register', 'Mã xác thực không đúng', 'danger');
+            generateCaptcha('register');
+            return;
+          }
+          
+          // Register using the auth system
+          const result = window.authSystem.register(name, email, phone, password);
+          
+          if (result.success) {
+            showAlert('register', result.message, 'success');
+            
+            // Reset form
+            this.reset();
+            
+            // Switch to login tab after a delay
+            setTimeout(() => {
+              toggleForms('login');
+            }, 2000);
+          } else {
+            showAlert('register', result.message, 'danger');
+            generateCaptcha('register');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
